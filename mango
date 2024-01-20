@@ -1,0 +1,18 @@
+1. The Linux chmod command is used to control file permissions, allowing you to specify who can access files, search directories, and run scripts.
+
+2. 
+Cron is a time-based job scheduler in Unix-like operating systems. It allows users to schedule jobs (commands or scripts) to run periodically at fixed times, dates, or intervals. To schedule a cron job, you use the crontab
+
+3.  The find command is powerful and flexible, so you can customize your search based on various criteria. Always ensure you have the necessary permissions to access the directories you are searching.Search for Files Modified Within N Days: find /path/to/search -mtime -N
+
+4.The Ext4 supports a single file size of up to 16 TiB ( Tebibytes ) whereas XFS supports a max file size of up to 8 exbibytes. 
+
+5. An inode is a data structure that keeps track of all the files and directories within a Linux or UNIX-based filesystem.
+
+6. To monitor network traffic and analyze issues on a Linux system, you can use various command-line and graphical tools that provide insights into network performance, connectivity, and troubleshooting. Here are some commonly used tools:
+
+Command-Line Tools:
+iftop: Interactive real-time console-based network bandwidth monitoring tool. It shows a list of network connections and the data rate at which they are currently being used.
+
+
+7. Troubleshooting DNS (Domain Name System) problems on a Linux server involves diagnosing and resolving issues related to domain name resolution. Here are steps and commands you can use to identify and troubleshoot DNS problems on a Linux server:
