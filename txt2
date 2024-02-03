@@ -1,1 +1,0 @@
-Answer:How to View Linux System Information To know only the system name, you can use the uname command without any switch that will print system information or the uname -s command will print the kernel name of your system. To view your Linux network hostname, use the ‘-n’ switch with the uname command as show
