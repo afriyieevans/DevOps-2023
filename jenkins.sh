@@ -20,25 +20,26 @@ systemctl enable jenkins
 # Install Java 17
 sudo yum install -y java-17
 
-
 # Give sudo powers without password
 chmod 660 /etc/sudoers.d/90-cloud-init-users
 echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/90-cloud-init-users
 chmod 440 /etc/sudoers.d/90-cloud-init-users
-sleep 2
-echo "USE THIS SECRETE PASSWD TO CONFIGURE JENKINS"
-sleep 2
+
+# Installing git
 sudo yum install git -y
 
-# configuring docker 
+# Configuring docker 
 sudo yum install docker -y
 sudo systemctl start docker 
 sudo systemctl enable docker 
-sudo systemctl status docker 
+# sudo systemctl status docker 
 sudo usermod -aG docker ec2-user 
 sudo usermod -aG docker jenkins 
 sudo systemctl restart docker
 
-# obtaining jenkins password
+# Obtaining jenkins password
+sleep 2
+echo "USE THIS SECRETE PASSWD TO CONFIGURE JENKINS"
+sleep 2
 cat /var/lib/jenkins/secrets/initialAdminPassword
 
