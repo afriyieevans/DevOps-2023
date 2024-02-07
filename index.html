@@ -3,57 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EzyEmpire - Online Marketing</title>
+    <title>Ezyempire Multi Investment Bank</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #ffffff; /* Set your preferred background color */
-            color: #333; /* Set your preferred text color */
+            background-color: #f4f4f4;
         }
 
         header {
-            background-color: #e10000; /* Red color from Ghana flag */
-            color: #ffcc29; /* Yellow color from Ghana flag */
-            padding: 10px;
+            background-color: #333;
+            color: #fff;
             text-align: center;
+            padding: 1em;
         }
 
-        section {
+        main {
+            max-width: 800px;
+            margin: 20px auto;
             padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
         }
 
-        footer {
-            background-color: #008000; /* Green color from Ghana flag */
-            color: #ffffff;
-            padding: 10px;
-            text-align: center;
-            position: fixed;
-            bottom: 0;
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
             width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-
     <header>
-        <h1>EzyEmpire - Online Marketing</h1>
+        <h1>Ezyempire Multi Investment Bank</h1>
     </header>
+    <main>
+        <form action="/login" method="post">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
 
-    <section>
-        <h2>Welcome to EzyEmpire!</h2>
-        <p>Your go-to destination for online marketing solutions in Ghana.</p>
-        <p>Contact us at:</p>
-        <p>Email: <a href="mailto:ezyempire2285@gmail.com">ezyempire2285@gmail.com</a></p>
-        <p>Address: 2285 EzyEmpire Ghana</p>
-        <p>Contact Number: 0208847526</p>
-    </section>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
 
+            <button type="submit">Login</button>
+        </form>
+    </main>
     <footer>
-        &copy; 2024 EzyEmpire - Online Marketing
+        <p>Contact Address: 2285 Rue Kwabena Boateng</p>
+        <p>Telephone: 0208847526</p>
     </footer>
-
 </body>
 </html>
 
