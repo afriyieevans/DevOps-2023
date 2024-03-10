@@ -38,8 +38,8 @@ sudo usermod -aG docker jenkins
 sudo systemctl restart docker
 
 # Obtaining jenkins password
-sleep 2
+sleep 12
 echo "USE THIS SECRETE PASSWD TO CONFIGURE JENKINS"
-sleep 2
+sleep 20
 cat /var/lib/jenkins/secrets/initialAdminPassword
 
