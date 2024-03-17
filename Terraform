@@ -1,0 +1,151 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+# Configure the AWS Provider
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_vpc" "dev" {
+  cidr_block           = "10.0.0.0/16"
+  instance_tenancy     = "default"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name = "dev-vpc"
+  }
+}
+
+resource "aws_subnet" "privsub1" {
+  vpc_id            = aws_vpc.dev.id
+  cidr_block        = "10.0.128.0/18"
+  availability_zone = "us-east-1b"
+
+  tags = {
+    Name = "Private_Subnet_1"
+  }
+}
+
+resource "aws_subnet" "pubsub1" {
+  vpc_id                  = aws_vpc.dev.id
+  cidr_block              = "10.0.192.0/18"
+  map_public_ip_on_launch = true
+  availability_zone       = "us-east-1a"
+
+  tags = {
+    Name = "Public_Subnet_1"
+  }
+}
+
+
+resource "aws_internet_gateway" "dev-igw" {
+  vpc_id = aws_vpc.dev.id
+
+  tags = {
+    Name = "dev_igw"
+  }
+}
+
+resource "aws_route_table" "dev-rtb" {
+  vpc_id = aws_vpc.dev.id
+
+  tags = {
+    Name = "dev_rtb"
+  }
+}
+
+resource "aws_route" "dev-rt" {
+  route_table_id         = aws_route_table.dev-rtb.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.dev-igw.id
+}
+
+resource "aws_route_table_association" "rta_pub" {
+  subnet_id      = aws_subnet.pubsub1.id
+  route_table_id = aws_route_table.dev-rtb.id
+}
+
+resource "aws_security_group" "public_sg" {
+  name        = "all_traffic"
+  description = "Public SG to allow all traffic"
+  vpc_id      = aws_vpc.dev.id
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+
+  }
+
+  tags = {
+    Name = "Open SG"
+  }
+}
+
+resource "aws_instance" "first_ec2" {
+  ami                    = data.aws_ami.al2023.id
+  instance_type          = "t2.medium"
+  key_name               = "NewEmpire"
+  vpc_security_group_ids = [aws_security_group.public_sg.id]
+  subnet_id              = aws_subnet.pubsub1.id
+  user_data              = file("userdata.tpl")
+
+  tags = {
+    Name = "sonarqube_Instance"
+  }
+}
+
+resource "aws_instance" "jenkins_ec2" {
+  ami                    = data.aws_ami.al2023.id
+  instance_type          = "t2.medium"
+  key_name               = "NewEmpire"
+  vpc_security_group_ids = [aws_security_group.public_sg.id]
+  subnet_id              = aws_subnet.pubsub1.id
+  user_data              = file("userdata.tpl")
+
+  tags = {
+    Name = "jenkins_ec2_First_Instance"
+  }
+}
+
+resource "aws_instance" "ansible_ec2" {
+  ami                    = data.aws_ami.al2023.id
+  instance_type          = "t2.medium"
+  key_name               = "NewEmpire"
+  vpc_security_group_ids = [aws_security_group.public_sg.id]
+  subnet_id              = aws_subnet.pubsub1.id
+  user_data              = file("userdata.tpl")
+
+  tags = {
+    Name = "ansible_ec2_First_Instance"
+  }
+}
+
+resource "aws_instance" "k8s_ec2" {
+  ami                    = data.aws_ami.al2023.id
+  instance_type          = "t2.medium"
+  key_name               = "NewEmpire"
+  vpc_security_group_ids = [aws_security_group.public_sg.id]
+  subnet_id              = aws_subnet.pubsub1.id
+  user_data              = file("userdata.tpl")
+
+  tags = {
+    Name = "k8s_ec2_First_Instance"
+  }
+}
+
