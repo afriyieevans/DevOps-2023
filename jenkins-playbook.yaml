@@ -1,0 +1,140 @@
+---
+- name: Install jenkins
+  hosts: jenkins_ec2_First_Instance
+  become: true
+
+  tasks:
+        
+    - name: Install the latest version of docker 
+      ansible.builtin.dnf:
+        name: docker 
+        state: latest 
+
+    - name: Start service docker, if not started
+      ansible.builtin.service:
+        name: docker
+        state: started
+
+    - name: Enable service docker, if not enabled
+      ansible.builtin.service:
+        name: docker
+        enabled: yes
+
+    - name: Install  java 17 
+      ansible.builtin.dnf:
+        name: java-17-amazon-corretto-devel.x86_64
+        state: latest 
+
+    - name: Install  git
+      ansible.builtin.dnf:
+        name: git
+        state: latest 
+
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+        path: /home/ec2-user/.bash_profile
+        line: JAVA_HOME=/usr/lib/jvm/java-17
+        create: yes
+
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+        path: /home/ec2-user/.bash_profile
+        line: export JAVA_HOME
+        create: yes
+
+    - name: Create a directory maven
+      ansible.builtin.file:
+        path: /opt/maven
+        state: directory
+        mode: '0755'
+
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: /opt/maven
+        owner: ec2-user
+        group: ec2-user
+        mode: '0755'
+
+    - name: Download maven
+      ansible.builtin.get_url:
+        url: https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+        dest: /opt/maven/
+
+    - name: Unarchive a file that is already on the remote machine
+      unarchive:
+        src: /opt/maven/apache-maven-3.9.6-bin.tar.gz
+        dest: /opt/maven/
+        remote_src: yes
+
+    - name: Remove file (delete file)
+      ansible.builtin.file:
+        path: /opt/maven/apache-maven-3.9.6-bin.tar.gz
+        state: absent
+
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: /opt/maven/apache-maven-3.9.6
+        owner: ec2-user
+        group: ec2-user
+        mode: '0755'
+
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+        path: /home/ec2-user/.bash_profile
+        line: M2_HOME=/opt/maven/apache-maven-3.9.6
+        create: yes
+
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+        path: /home/ec2-user/.bash_profile
+        line: M2=$M2_HOME/bin
+        create: yes
+
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      ansible.builtin.lineinfile:
+        path: /home/ec2-user/.bash_profile
+        line: PATH=$PATH:$JAVA_HOME:$M2_HOME:$M2
+        create: yes
+
+    - name: Execute the command 
+      ansible.builtin.shell: source /home/ec2-user/.bash_profile
+
+    - name: Add Jenkins repository key
+      rpm_key:
+        key: https://pkg.jenkins.io/redhat/jenkins.io.key
+        state: present
+
+    - name: Add Jenkins repository
+      yum_repository:
+        name: jenkins
+        description: Jenkins Official Repository
+        baseurl: http://pkg.jenkins.io/redhat-stable
+        gpgcheck: yes
+        state: present
+
+    - name: Import GPG key for Jenkins
+      command: sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io-2023.key
+
+    - name: Install Jenkins
+      yum:
+        name: jenkins
+        state: present
+
+    - name: Start Jenkins service
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    - name: Wait for Jenkins to start
+      wait_for:
+        port: 8080
+        timeout: 60
+
+    - name: Print Jenkins initial admin password
+      command: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_admin_password
+
+    - name: Print Jenkins initial admin password
+      debug:
+        msg: "Jenkins initial admin password: {{ jenkins_admin_password.stdout }}"
