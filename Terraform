@@ -103,7 +103,6 @@ resource "aws_instance" "first_ec2" {
   key_name               = "NewEmpire"
   vpc_security_group_ids = [aws_security_group.public_sg.id]
   subnet_id              = aws_subnet.pubsub1.id
-  user_data              = file("userdata.tpl")
 
   tags = {
     Name = "sonarqube_Instance"
@@ -116,7 +115,6 @@ resource "aws_instance" "jenkins_ec2" {
   key_name               = "NewEmpire"
   vpc_security_group_ids = [aws_security_group.public_sg.id]
   subnet_id              = aws_subnet.pubsub1.id
-  user_data              = file("userdata.tpl")
 
   tags = {
     Name = "jenkins_ec2_First_Instance"
@@ -129,7 +127,6 @@ resource "aws_instance" "ansible_ec2" {
   key_name               = "NewEmpire"
   vpc_security_group_ids = [aws_security_group.public_sg.id]
   subnet_id              = aws_subnet.pubsub1.id
-  user_data              = file("userdata.tpl")
 
   tags = {
     Name = "ansible_ec2_First_Instance"
@@ -137,15 +134,15 @@ resource "aws_instance" "ansible_ec2" {
 }
 
 resource "aws_instance" "k8s_ec2" {
-  ami                    = data.aws_ami.al2023.id
+  ami                    = data.aws_ami.al2.id
   instance_type          = "t2.medium"
   key_name               = "NewEmpire"
   vpc_security_group_ids = [aws_security_group.public_sg.id]
   subnet_id              = aws_subnet.pubsub1.id
-  user_data              = file("userdata.tpl")
 
   tags = {
     Name = "k8s_ec2_First_Instance"
   }
 }
+
 
