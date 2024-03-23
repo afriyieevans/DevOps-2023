@@ -1,0 +1,11 @@
+
+- name: Setup k3s master and nodes on Amazon Linux 2
+  hosts: k8s_ec2_First_Instance
+  remote_user: ec2-user
+  tasks:
+
+    - name: Execute the command in remote shell; stdout goes to the specified file on the remote
+      ansible.builtin.shell: kubectl delete -f deployment.yaml
+
+    - name: Execute the command in remote shell; stdout goes to the specified file on the remote
+      ansible.builtin.shell: kubectl apply -f deployment.yaml
